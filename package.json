@@ -1,0 +1,20 @@
+
+{
+  "name": "job-portal-ai",
+  "version": "1.0.0",
+  "description": "AI Powered Job Portal & Resume Analyzer",
+  "scripts": {
+    "dev": "concurrently \"cd server && npm run dev\" \"cd client && npm run dev\"",
+    "install-server": "cd server && npm install",
+    "install-client": "cd client && npm install",
+    "install-all": "npm run install-server && npm run install-client",
+    "build": "cd client && npm run build",
+    "start": "cd server && npm start"
+  },
+  "keywords": ["job-portal", "resume-analyzer", "mern", "ai"],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}
