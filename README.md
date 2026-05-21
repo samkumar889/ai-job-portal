@@ -1,4 +1,4 @@
-
+Live Demo   ai-job-portal-omega.vercel.app
 # AI Powered Job Portal & Resume Analyzer
 
 A modern full-stack job portal and resume analyzer built with the MERN stack, featuring AI-powered resume analysis, ATS scoring, and more.
