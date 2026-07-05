@@ -1,5 +1,6 @@
 
 import { Link, useNavigate } from 'react-router-dom'
+import { useState, useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { logout } from '../redux/slices/authSlice'
 import { toggleDarkMode } from '../redux/slices/themeSlice'
@@ -11,11 +12,27 @@ const Navbar = () => {
   const { darkMode } = useSelector((state) => state.theme)
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+  const dropdownRef = useRef(null)
 
   const handleLogout = () => {
     dispatch(logout())
     navigate('/')
+    setIsDropdownOpen(false)
   }
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsDropdownOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [])
 
   return (
     <nav className={`sticky top-0 z-50 backdrop-blur-lg ${darkMode ? 'bg-onyx-900/80 border-b border-onyx-700' : 'bg-cream-50/80 border-b border-cream-200'} shadow-sm`}>
@@ -62,26 +79,32 @@ const Navbar = () => {
                     Recruiter Dashboard
                   </Link>
                 )}
-                <div className="relative group">
-                  <button className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-all-smooth ${darkMode ? 'text-cream-100 hover:bg-onyx-700' : 'text-onyx-800 hover:bg-cream-100'}`}>
+                <div className="relative" ref={dropdownRef}>
+                  <button 
+                    onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                    className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-all-smooth ${darkMode ? 'text-cream-100 hover:bg-onyx-700' : 'text-onyx-800 hover:bg-cream-100'}`}
+                  >
                     <FiUser className="text-xl" />
                     <span className="font-medium">{user?.name}</span>
                   </button>
-                  <div className={`absolute right-0 mt-2 w-48 rounded-xl shadow-xl overflow-hidden ${darkMode ? 'bg-onyx-800 border border-onyx-700' : 'bg-white border border-cream-200'} hidden group-hover:block transition-all-smooth`}>
-                    <Link
-                      to="/profile"
-                      className={`block px-4 py-3 transition-all-smooth ${darkMode ? 'text-cream-100 hover:bg-onyx-700' : 'text-onyx-800 hover:bg-cream-100'}`}
-                    >
-                      Profile
-                    </Link>
-                    <button
-                      onClick={handleLogout}
-                      className={`w-full text-left px-4 py-3 flex items-center space-x-2 transition-all-smooth ${darkMode ? 'text-cream-100 hover:bg-onyx-700' : 'text-onyx-800 hover:bg-cream-100'}`}
-                    >
-                      <FiLogOut />
-                      <span>Logout</span>
-                    </button>
-                  </div>
+                  {isDropdownOpen && (
+                    <div className={`absolute right-0 mt-2 w-48 rounded-xl shadow-xl overflow-hidden ${darkMode ? 'bg-onyx-800 border border-onyx-700' : 'bg-white border border-cream-200'}`}>
+                      <Link
+                        to="/profile"
+                        onClick={() => setIsDropdownOpen(false)}
+                        className={`block px-4 py-3 transition-all-smooth ${darkMode ? 'text-cream-100 hover:bg-onyx-700' : 'text-onyx-800 hover:bg-cream-100'}`}
+                      >
+                        Profile
+                      </Link>
+                      <button
+                        onClick={handleLogout}
+                        className={`w-full text-left px-4 py-3 flex items-center space-x-2 transition-all-smooth ${darkMode ? 'text-cream-100 hover:bg-onyx-700' : 'text-onyx-800 hover:bg-cream-100'}`}
+                      >
+                        <FiLogOut />
+                        <span>Logout</span>
+                      </button>
+                    </div>
+                  )}
                 </div>
               </>
             ) : (
