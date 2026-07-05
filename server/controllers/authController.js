@@ -9,15 +9,15 @@ dotenv.config();
 const sendEmail = async (options) => {
   const transporter = nodemailer.createTransport({
     host: process.env.SMTP_HOST || 'smtp.ethereal.email',
-    port: process.env.SMTP_PORT || 587,
+    port: parseInt(process.env.SMTP_PORT) || 587,
     auth: {
-      user: process.env.SMTP_EMAIL || 'test@example.com',
-      pass: process.env.SMTP_PASSWORD || 'testpass',
+      user: process.env.SMTP_USER || 'test@example.com',
+      pass: process.env.SMTP_PASS || 'testpass',
     },
   });
 
   const message = {
-    from: `${process.env.FROM_NAME || 'Job Portal'} <${process.env.FROM_EMAIL || 'noreply@jobportal.com'}>`,
+    from: process.env.SMTP_FROM || 'Job Portal <noreply@jobportal.com>',
     to: options.email,
     subject: options.subject,
     text: options.message,
@@ -173,44 +173,38 @@ const forgotPassword = async (req, res) => {
   try {
     const user = await User.findOne({ email: req.body.email });
 
-    if (!user) {
-      return res.status(404).json({
-        success: false,
-        message: 'User not found with this email',
-      });
-    }
-
-    const resetToken = user.getResetPasswordToken();
-
-    await user.save({ validateBeforeSave: false });
-
-    const resetUrl = `${req.protocol}://${req.get('host')}/reset-password/${resetToken}`;
-
-    const message = `You are receiving this email because you (or someone else) has requested the reset of a password. Please make a PUT request to: \n\n ${resetUrl}`;
-
-    try {
-      await sendEmail({
-        email: user.email,
-        subject: 'Password Reset Token',
-        message,
-      });
-
-      res.status(200).json({
-        success: true,
-        message: 'Email sent successfully',
-      });
-    } catch (error) {
-      console.error('Email Error:', error);
-      user.resetPasswordToken = undefined;
-      user.resetPasswordExpire = undefined;
+    if (user) {
+      const resetToken = user.getResetPasswordToken();
 
       await user.save({ validateBeforeSave: false });
 
-      return res.status(500).json({
-        success: false,
-        message: 'Email could not be sent',
-      });
+      // For frontend, the reset link should point to the frontend URL
+      const resetUrl = `${process.env.FRONTEND_URL || 'http://localhost:5173'}/reset-password/${resetToken}`;
+
+      const message = `You are receiving this email because you (or someone else) has requested the reset of a password. Please click the link below to reset your password:\n\n${resetUrl}\n\nIf you did not request this, please ignore this email.`;
+
+      try {
+        await sendEmail({
+          email: user.email,
+          subject: 'Password Reset Request',
+          message,
+        });
+
+        console.log('Password reset email sent to:', user.email);
+      } catch (error) {
+        console.error('Email Error:', error);
+        user.resetPasswordToken = undefined;
+        user.resetPasswordExpire = undefined;
+
+        await user.save({ validateBeforeSave: false });
+      }
     }
+
+    // Always return the same message, whether email exists or not
+    res.status(200).json({
+      success: true,
+      message: 'If an account with that email exists, we\'ve sent a password reset link.',
+    });
   } catch (error) {
     console.error('Forgot Password Error:', error);
     res.status(500).json({
