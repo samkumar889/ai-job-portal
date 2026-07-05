@@ -136,8 +136,10 @@ const RecruiterDashboard = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
       >
-        <div className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-bold">Recruiter Dashboard</h1>
+        <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-10">
+          <h1 className={`text-4xl font-bold mb-4 md:mb-0 ${darkMode ? 'text-cream-100' : 'text-onyx-900'}`}>
+            Recruiter Dashboard
+          </h1>
           <button
             onClick={() => {
               setEditingJob(null)
@@ -153,61 +155,64 @@ const RecruiterDashboard = () => {
               })
               setShowModal(true)
             }}
-            className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+            className="btn-cream px-6 py-3 text-onyx-900 font-semibold rounded-xl flex items-center"
           >
             <FiPlus className="mr-2" />
-            Post Job
+            Post New Job
           </button>
         </div>
 
         <div className="space-y-6">
-          {jobs.map((job) => (
-            <div
+          {jobs.map((job, index) => (
+            <motion.div
               key={job._id}
-              className={`p-6 rounded-xl ${darkMode ? 'bg-gray-800' : 'bg-white'} shadow-lg`}
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: index * 0.1 }}
+              className={`p-8 rounded-2xl ${darkMode ? 'bg-onyx-800 border border-onyx-700' : 'bg-white border border-cream-200'} shadow-xl`}
             >
-              <div className="flex justify-between items-start mb-4">
+              <div className="flex flex-col md:flex-row md:justify-between md:items-start mb-6">
                 <div>
-                  <h2 className="text-2xl font-bold mb-1">{job.title}</h2>
-                  <p className={darkMode ? 'text-gray-400' : 'text-gray-600'}>{job.company}</p>
+                  <h2 className={`text-2xl font-bold mb-1 ${darkMode ? 'text-cream-100' : 'text-onyx-900'}`}>{job.title}</h2>
+                  <p className={darkMode ? 'text-onyx-300' : 'text-onyx-600'}>{job.company}</p>
                 </div>
-                <div className="flex space-x-2">
+                <div className="flex space-x-3 mt-4 md:mt-0">
                   <button
                     onClick={() => handleEdit(job)}
-                    className="p-2 text-blue-600 hover:bg-blue-100 rounded-lg"
+                    className="p-3 text-cream-600 hover:bg-cream-100 rounded-xl transition-all-smooth"
                   >
                     <FiEdit />
                   </button>
                   <button
                     onClick={() => handleDelete(job._id)}
-                    className="p-2 text-red-600 hover:bg-red-100 rounded-lg"
+                    className="p-3 text-red-600 hover:bg-red-100 rounded-xl transition-all-smooth"
                   >
                     <FiTrash2 />
                   </button>
                 </div>
               </div>
 
-              <div className="mb-4">
-                <div className="flex items-center space-x-2 mb-2">
-                  <FiUsers className="text-blue-600" />
-                  <h3 className="font-bold">
+              <div>
+                <div className="flex items-center space-x-2 mb-4">
+                  <FiUsers className="text-cream-500 text-2xl" />
+                  <h3 className={`font-bold text-xl ${darkMode ? 'text-cream-100' : 'text-onyx-900'}`}>
                     Applicants ({job.applicants?.length || 0})
                   </h3>
                 </div>
                 {job.applicants?.length > 0 ? (
-                  <div className="space-y-3">
+                  <div className="space-y-4">
                     {job.applicants.map((applicant) => (
                       <div
                         key={applicant.user._id}
-                        className={`p-4 rounded-lg ${darkMode ? 'bg-gray-700' : 'bg-gray-100'}`}
+                        className={`p-6 rounded-xl ${darkMode ? 'bg-onyx-700' : 'bg-cream-50'}`}
                       >
-                        <div className="flex justify-between items-center">
+                        <div className="flex flex-col md:flex-row md:justify-between md:items-center">
                           <div>
-                            <p className="font-medium">{applicant.user.name}</p>
-                            <p className={darkMode ? 'text-gray-400' : 'text-gray-600'}>
+                            <p className={`font-medium text-lg ${darkMode ? 'text-cream-100' : 'text-onyx-900'}`}>{applicant.user.name}</p>
+                            <p className={darkMode ? 'text-onyx-300' : 'text-onyx-600'}>
                               {applicant.user.email}
                             </p>
-                            <p className="text-sm text-gray-500">
+                            <p className="text-sm text-gray-500 mt-1">
                               Applied: {new Date(applicant.appliedAt).toLocaleDateString()}
                             </p>
                             {applicant.user.resume && (
@@ -215,13 +220,13 @@ const RecruiterDashboard = () => {
                                 href={applicant.user.resume}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="inline-flex items-center mt-2 text-blue-600 hover:text-blue-800 text-sm"
+                                className="inline-flex items-center mt-3 text-cream-600 hover:text-cream-700 text-sm font-medium"
                               >
                                 View Resume
                               </a>
                             )}
                           </div>
-                          <div className="flex space-x-2">
+                          <div className="flex space-x-3 mt-4 md:mt-0">
                             {applicant.status === 'pending' && (
                               <>
                                 <button
@@ -232,7 +237,7 @@ const RecruiterDashboard = () => {
                                       'accepted'
                                     )
                                   }
-                                  className="px-3 py-1 bg-green-600 text-white rounded-lg text-sm hover:bg-green-700"
+                                  className="px-4 py-2 bg-green-600 text-white rounded-xl text-sm hover:bg-green-700 transition-all-smooth"
                                 >
                                   Accept
                                 </button>
@@ -244,19 +249,19 @@ const RecruiterDashboard = () => {
                                       'rejected'
                                     )
                                   }
-                                  className="px-3 py-1 bg-red-600 text-white rounded-lg text-sm hover:bg-red-700"
+                                  className="px-4 py-2 bg-red-600 text-white rounded-xl text-sm hover:bg-red-700 transition-all-smooth"
                                 >
                                   Reject
                                 </button>
                               </>
                             )}
                             {applicant.status === 'accepted' && (
-                              <span className="px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm">
+                              <span className="px-4 py-2 bg-green-100 text-green-700 rounded-full text-sm font-medium">
                                 Accepted
                               </span>
                             )}
                             {applicant.status === 'rejected' && (
-                              <span className="px-3 py-1 bg-red-100 text-red-700 rounded-full text-sm">
+                              <span className="px-4 py-2 bg-red-100 text-red-700 rounded-full text-sm font-medium">
                                 Rejected
                               </span>
                             )}
@@ -266,27 +271,29 @@ const RecruiterDashboard = () => {
                     ))}
                   </div>
                 ) : (
-                  <p className={darkMode ? 'text-gray-400' : 'text-gray-600'}>
+                  <p className={darkMode ? 'text-onyx-300' : 'text-onyx-600'}>
                     No applicants yet
                   </p>
                 )}
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
 
         {showModal && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-            <div
-              className={`w-full max-w-2xl p-6 rounded-xl ${darkMode ? 'bg-gray-800' : 'bg-white'} shadow-2xl`}
+          <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4 z-50">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className={`w-full max-w-2xl p-8 rounded-2xl ${darkMode ? 'bg-onyx-800 border border-onyx-700' : 'bg-white border border-cream-200'} shadow-2xl`}
             >
-              <h2 className="text-2xl font-bold mb-6">
+              <h2 className={`text-3xl font-bold mb-6 ${darkMode ? 'text-cream-100' : 'text-onyx-900'}`}>
                 {editingJob ? 'Edit Job' : 'Post New Job'}
               </h2>
               <form onSubmit={handleSubmit}>
                 <div className="grid md:grid-cols-2 gap-4 mb-4">
                   <div>
-                    <label className="block mb-2 font-medium">Job Title</label>
+                    <label className={`block mb-2 font-medium ${darkMode ? 'text-cream-100' : 'text-onyx-800'}`}>Job Title</label>
                     <input
                       type="text"
                       value={formData.title}
@@ -294,11 +301,15 @@ const RecruiterDashboard = () => {
                         setFormData({ ...formData, title: e.target.value })
                       }
                       required
-                      className={`w-full px-4 py-2 rounded-lg border ${darkMode ? 'bg-gray-700 border-gray-600' : 'bg-gray-50 border-gray-300'}`}
+                      className={`w-full px-4 py-3 rounded-xl border transition-all-smooth focus:outline-none focus:ring-2 focus:ring-cream-500 ${
+                        darkMode
+                          ? 'bg-onyx-700 border-onyx-600 text-cream-100'
+                          : 'bg-cream-50 border-cream-300 text-onyx-900'
+                      }`}
                     />
                   </div>
                   <div>
-                    <label className="block mb-2 font-medium">Company</label>
+                    <label className={`block mb-2 font-medium ${darkMode ? 'text-cream-100' : 'text-onyx-800'}`}>Company</label>
                     <input
                       type="text"
                       value={formData.company}
@@ -306,13 +317,17 @@ const RecruiterDashboard = () => {
                         setFormData({ ...formData, company: e.target.value })
                       }
                       required
-                      className={`w-full px-4 py-2 rounded-lg border ${darkMode ? 'bg-gray-700 border-gray-600' : 'bg-gray-50 border-gray-300'}`}
+                      className={`w-full px-4 py-3 rounded-xl border transition-all-smooth focus:outline-none focus:ring-2 focus:ring-cream-500 ${
+                        darkMode
+                          ? 'bg-onyx-700 border-onyx-600 text-cream-100'
+                          : 'bg-cream-50 border-cream-300 text-onyx-900'
+                      }`}
                     />
                   </div>
                 </div>
                 <div className="grid md:grid-cols-2 gap-4 mb-4">
                   <div>
-                    <label className="block mb-2 font-medium">Location</label>
+                    <label className={`block mb-2 font-medium ${darkMode ? 'text-cream-100' : 'text-onyx-800'}`}>Location</label>
                     <input
                       type="text"
                       value={formData.location}
@@ -320,11 +335,15 @@ const RecruiterDashboard = () => {
                         setFormData({ ...formData, location: e.target.value })
                       }
                       required
-                      className={`w-full px-4 py-2 rounded-lg border ${darkMode ? 'bg-gray-700 border-gray-600' : 'bg-gray-50 border-gray-300'}`}
+                      className={`w-full px-4 py-3 rounded-xl border transition-all-smooth focus:outline-none focus:ring-2 focus:ring-cream-500 ${
+                        darkMode
+                          ? 'bg-onyx-700 border-onyx-600 text-cream-100'
+                          : 'bg-cream-50 border-cream-300 text-onyx-900'
+                      }`}
                     />
                   </div>
                   <div>
-                    <label className="block mb-2 font-medium">Salary</label>
+                    <label className={`block mb-2 font-medium ${darkMode ? 'text-cream-100' : 'text-onyx-800'}`}>Salary</label>
                     <input
                       type="text"
                       value={formData.salary}
@@ -332,18 +351,26 @@ const RecruiterDashboard = () => {
                         setFormData({ ...formData, salary: e.target.value })
                       }
                       required
-                      className={`w-full px-4 py-2 rounded-lg border ${darkMode ? 'bg-gray-700 border-gray-600' : 'bg-gray-50 border-gray-300'}`}
+                      className={`w-full px-4 py-3 rounded-xl border transition-all-smooth focus:outline-none focus:ring-2 focus:ring-cream-500 ${
+                        darkMode
+                          ? 'bg-onyx-700 border-onyx-600 text-cream-100'
+                          : 'bg-cream-50 border-cream-300 text-onyx-900'
+                      }`}
                     />
                   </div>
                 </div>
                 <div className="mb-4">
-                  <label className="block mb-2 font-medium">Job Type</label>
+                  <label className={`block mb-2 font-medium ${darkMode ? 'text-cream-100' : 'text-onyx-800'}`}>Job Type</label>
                   <select
                     value={formData.type}
                     onChange={(e) =>
                       setFormData({ ...formData, type: e.target.value })
                     }
-                    className={`w-full px-4 py-2 rounded-lg border ${darkMode ? 'bg-gray-700 border-gray-600' : 'bg-gray-50 border-gray-300'}`}
+                    className={`w-full px-4 py-3 rounded-xl border transition-all-smooth focus:outline-none focus:ring-2 focus:ring-cream-500 ${
+                      darkMode
+                        ? 'bg-onyx-700 border-onyx-600 text-cream-100'
+                        : 'bg-cream-50 border-cream-300 text-onyx-900'
+                    }`}
                   >
                     <option value="full-time">Full-time</option>
                     <option value="part-time">Part-time</option>
@@ -352,7 +379,7 @@ const RecruiterDashboard = () => {
                   </select>
                 </div>
                 <div className="mb-4">
-                  <label className="block mb-2 font-medium">
+                  <label className={`block mb-2 font-medium ${darkMode ? 'text-cream-100' : 'text-onyx-800'}`}>
                     Requirements (comma-separated)
                   </label>
                   <textarea
@@ -361,11 +388,15 @@ const RecruiterDashboard = () => {
                       setFormData({ ...formData, requirements: e.target.value })
                     }
                     rows={3}
-                    className={`w-full px-4 py-2 rounded-lg border ${darkMode ? 'bg-gray-700 border-gray-600' : 'bg-gray-50 border-gray-300'}`}
+                    className={`w-full px-4 py-3 rounded-xl border transition-all-smooth focus:outline-none focus:ring-2 focus:ring-cream-500 ${
+                      darkMode
+                        ? 'bg-onyx-700 border-onyx-600 text-cream-100'
+                        : 'bg-cream-50 border-cream-300 text-onyx-900'
+                    }`}
                   />
                 </div>
                 <div className="mb-4">
-                  <label className="block mb-2 font-medium">
+                  <label className={`block mb-2 font-medium ${darkMode ? 'text-cream-100' : 'text-onyx-800'}`}>
                     Skills (comma-separated)
                   </label>
                   <textarea
@@ -374,11 +405,15 @@ const RecruiterDashboard = () => {
                       setFormData({ ...formData, skills: e.target.value })
                     }
                     rows={3}
-                    className={`w-full px-4 py-2 rounded-lg border ${darkMode ? 'bg-gray-700 border-gray-600' : 'bg-gray-50 border-gray-300'}`}
+                    className={`w-full px-4 py-3 rounded-xl border transition-all-smooth focus:outline-none focus:ring-2 focus:ring-cream-500 ${
+                      darkMode
+                        ? 'bg-onyx-700 border-onyx-600 text-cream-100'
+                        : 'bg-cream-50 border-cream-300 text-onyx-900'
+                    }`}
                   />
                 </div>
                 <div className="mb-6">
-                  <label className="block mb-2 font-medium">Description</label>
+                  <label className={`block mb-2 font-medium ${darkMode ? 'text-cream-100' : 'text-onyx-800'}`}>Description</label>
                   <textarea
                     value={formData.description}
                     onChange={(e) =>
@@ -386,26 +421,34 @@ const RecruiterDashboard = () => {
                     }
                     rows={6}
                     required
-                    className={`w-full px-4 py-2 rounded-lg border ${darkMode ? 'bg-gray-700 border-gray-600' : 'bg-gray-50 border-gray-300'}`}
+                    className={`w-full px-4 py-3 rounded-xl border transition-all-smooth focus:outline-none focus:ring-2 focus:ring-cream-500 ${
+                      darkMode
+                        ? 'bg-onyx-700 border-onyx-600 text-cream-100'
+                        : 'bg-cream-50 border-cream-300 text-onyx-900'
+                    }`}
                   />
                 </div>
-                <div className="flex space-x-4">
+                <div className="flex flex-col md:flex-row gap-4">
                   <button
                     type="button"
                     onClick={() => setShowModal(false)}
-                    className={`flex-1 px-4 py-2 rounded-lg ${darkMode ? 'bg-gray-700 hover:bg-gray-600' : 'bg-gray-200 hover:bg-gray-300'}`}
+                    className={`flex-1 px-6 py-3 rounded-xl font-medium ${
+                      darkMode
+                        ? 'bg-onyx-700 hover:bg-onyx-600 text-cream-100'
+                        : 'bg-cream-100 hover:bg-cream-200 text-onyx-800'
+                    }`}
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
-                    className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                    className="btn-cream flex-1 px-6 py-3 text-onyx-900 font-semibold rounded-xl"
                   >
                     {editingJob ? 'Update Job' : 'Post Job'}
                   </button>
                 </div>
               </form>
-            </div>
+            </motion.div>
           </div>
         )}
       </motion.div>

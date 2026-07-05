@@ -79,83 +79,107 @@ const Profile = () => {
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className={`p-8 rounded-xl ${darkMode ? 'bg-gray-800' : 'bg-white'} shadow-lg`}
+        className={`p-10 rounded-2xl ${darkMode ? 'bg-onyx-800 border border-onyx-700' : 'bg-white border border-cream-200'} shadow-xl`}
       >
-        <h1 className="text-3xl font-bold mb-8">My Profile</h1>
+        <h1 className={`text-4xl font-bold mb-8 ${darkMode ? 'text-cream-100' : 'text-onyx-900'}`}>My Profile</h1>
 
         <form onSubmit={handleSubmit}>
           <div className="grid md:grid-cols-2 gap-4 mb-4">
             <div>
-              <label className="block mb-2 font-medium">Name</label>
+              <label className={`block mb-2 font-medium ${darkMode ? 'text-cream-100' : 'text-onyx-800'}`}>Name</label>
               <input
                 type="text"
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                className={`w-full px-4 py-2 rounded-lg border ${darkMode ? 'bg-gray-700 border-gray-600' : 'bg-gray-50 border-gray-300'}`}
+                className={`w-full px-4 py-3 rounded-xl border transition-all-smooth focus:outline-none focus:ring-2 focus:ring-cream-500 ${
+                  darkMode
+                    ? 'bg-onyx-700 border-onyx-600 text-cream-100'
+                    : 'bg-cream-50 border-cream-300 text-onyx-900'
+                }`}
               />
             </div>
             <div>
-              <label className="block mb-2 font-medium">Email</label>
+              <label className={`block mb-2 font-medium ${darkMode ? 'text-cream-100' : 'text-onyx-800'}`}>Email</label>
               <input
                 type="email"
                 value={formData.email}
                 disabled
-                className={`w-full px-4 py-2 rounded-lg border ${darkMode ? 'bg-gray-700 border-gray-600 opacity-50' : 'bg-gray-50 border-gray-300 opacity-50'}`}
+                className={`w-full px-4 py-3 rounded-xl border ${
+                  darkMode
+                    ? 'bg-onyx-700 border-onyx-600 text-onyx-300 opacity-50'
+                    : 'bg-cream-50 border-cream-300 text-onyx-600 opacity-50'
+                }`}
               />
             </div>
           </div>
 
           <div className="mb-4">
-            <label className="block mb-2 font-medium">Bio</label>
+            <label className={`block mb-2 font-medium ${darkMode ? 'text-cream-100' : 'text-onyx-800'}`}>Bio</label>
             <textarea
               value={formData.bio}
               onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
               rows={4}
-              className={`w-full px-4 py-2 rounded-lg border ${darkMode ? 'bg-gray-700 border-gray-600' : 'bg-gray-50 border-gray-300'}`}
+              className={`w-full px-4 py-3 rounded-xl border transition-all-smooth focus:outline-none focus:ring-2 focus:ring-cream-500 ${
+                darkMode
+                  ? 'bg-onyx-700 border-onyx-600 text-cream-100'
+                  : 'bg-cream-50 border-cream-300 text-onyx-900'
+              }`}
             />
           </div>
 
           <div className="mb-4">
-            <label className="block mb-2 font-medium">Skills (comma-separated)</label>
+            <label className={`block mb-2 font-medium ${darkMode ? 'text-cream-100' : 'text-onyx-800'}`}>Skills (comma-separated)</label>
             <textarea
               value={formData.skills}
               onChange={(e) => setFormData({ ...formData, skills: e.target.value })}
               rows={3}
-              className={`w-full px-4 py-2 rounded-lg border ${darkMode ? 'bg-gray-700 border-gray-600' : 'bg-gray-50 border-gray-300'}`}
+              className={`w-full px-4 py-3 rounded-xl border transition-all-smooth focus:outline-none focus:ring-2 focus:ring-cream-500 ${
+                darkMode
+                  ? 'bg-onyx-700 border-onyx-600 text-cream-100'
+                  : 'bg-cream-50 border-cream-300 text-onyx-900'
+              }`}
             />
           </div>
 
           <div className="mb-4">
-            <label className="block mb-2 font-medium">Experience</label>
+            <label className={`block mb-2 font-medium ${darkMode ? 'text-cream-100' : 'text-onyx-800'}`}>Experience</label>
             <textarea
               value={formData.experience}
               onChange={(e) => setFormData({ ...formData, experience: e.target.value })}
               rows={4}
-              className={`w-full px-4 py-2 rounded-lg border ${darkMode ? 'bg-gray-700 border-gray-600' : 'bg-gray-50 border-gray-300'}`}
+              className={`w-full px-4 py-3 rounded-xl border transition-all-smooth focus:outline-none focus:ring-2 focus:ring-cream-500 ${
+                darkMode
+                  ? 'bg-onyx-700 border-onyx-600 text-cream-100'
+                  : 'bg-cream-50 border-cream-300 text-onyx-900'
+              }`}
             />
           </div>
 
           <div className="mb-4">
-            <label className="block mb-2 font-medium">Education</label>
+            <label className={`block mb-2 font-medium ${darkMode ? 'text-cream-100' : 'text-onyx-800'}`}>Education</label>
             <textarea
               value={formData.education}
               onChange={(e) => setFormData({ ...formData, education: e.target.value })}
               rows={4}
-              className={`w-full px-4 py-2 rounded-lg border ${darkMode ? 'bg-gray-700 border-gray-600' : 'bg-gray-50 border-gray-300'}`}
+              className={`w-full px-4 py-3 rounded-xl border transition-all-smooth focus:outline-none focus:ring-2 focus:ring-cream-500 ${
+                darkMode
+                  ? 'bg-onyx-700 border-onyx-600 text-cream-100'
+                  : 'bg-cream-50 border-cream-300 text-onyx-900'
+              }`}
             />
           </div>
 
           {user?.resume && (
             <div className="mb-6">
-              <label className="block mb-2 font-medium">Uploaded Resume</label>
+              <label className={`block mb-2 font-medium ${darkMode ? 'text-cream-100' : 'text-onyx-800'}`}>Uploaded Resume</label>
               <a
                 href={user.resume}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                className="inline-flex items-center px-6 py-3 btn-cream text-onyx-900 font-semibold rounded-xl"
               >
                 View Resume
               </a>
@@ -165,7 +189,7 @@ const Profile = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
+            className="btn-cream w-full px-8 py-4 text-onyx-900 font-semibold rounded-xl disabled:opacity-50"
           >
             {loading ? 'Updating...' : 'Update Profile'}
           </button>

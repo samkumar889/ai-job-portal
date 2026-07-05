@@ -12,6 +12,8 @@ import JobListings from './pages/JobListings'
 import JobDetails from './pages/JobDetails'
 import RecruiterDashboard from './pages/RecruiterDashboard'
 import Profile from './pages/Profile'
+import ForgotPassword from './pages/ForgotPassword'
+import ResetPassword from './pages/ResetPassword'
 import ProtectedRoute from './components/ProtectedRoute'
 
 function App() {
@@ -27,12 +29,14 @@ function App() {
 
   return (
     <Router>
-      <div className={`min-h-screen ${darkMode ? 'dark bg-gray-900 text-white' : 'bg-gray-50 text-gray-900'}`}>
+      <div className={`min-h-screen ${darkMode ? 'dark bg-onyx-900 text-cream-100' : 'bg-cream-50 text-onyx-900'}`}>
         <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password/:resetToken" element={<ResetPassword />} />
           <Route path="/jobs" element={<JobListings />} />
           <Route path="/jobs/:id" element={<JobDetails />} />
           <Route path="/dashboard" element={
