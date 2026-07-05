@@ -40,19 +40,19 @@ const Home = () => {
           <img
             src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=1200&q=80"
             alt="Job Portal Hero"
-            className="w-full max-w-5xl mx-auto rounded-2xl shadow-2xl mb-8 object-cover h-[400px]"
+            className="w-full max-w-5xl mx-auto rounded-2xl shadow-2xl mb-8 object-cover h-[200px] sm:h-[300px] md:h-[400px]"
           />
         </div>
-        <h1 className={`text-5xl md:text-6xl font-bold mb-6 ${darkMode ? 'text-cream-100' : 'text-onyx-900'}`}>
+        <h1 className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 ${darkMode ? 'text-cream-100' : 'text-onyx-900'}`}>
           Find Your Dream Job with <span className="gradient-text">AI Power</span>
         </h1>
-        <p className={`text-xl mb-8 ${darkMode ? 'text-onyx-300' : 'text-onyx-600'}`}>
+        <p className={`text-lg sm:text-xl mb-8 ${darkMode ? 'text-onyx-300' : 'text-onyx-600'}`}>
           Revolutionize your job search with AI-powered resume analysis, job matching, and interview preparation.
         </p>
-        <div className="flex justify-center space-x-4 flex-wrap gap-4">
+        <div className="flex justify-center flex-col sm:flex-row gap-4">
           <Link
             to="/signup"
-            className="btn-cream px-8 py-3 text-onyx-900 rounded-lg hover:bg-blue-700 flex items-center space-x-2 font-semibold"
+            className="btn-cream px-8 py-3 text-onyx-900 rounded-lg hover:bg-blue-700 flex items-center justify-center space-x-2 font-semibold"
           >
             <span>Get Started</span>
             <FiArrowRight className="text-lg" />

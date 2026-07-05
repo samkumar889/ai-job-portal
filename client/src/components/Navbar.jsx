@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { logout } from '../redux/slices/authSlice'
 import { toggleDarkMode } from '../redux/slices/themeSlice'
-import { FiMoon, FiSun, FiLogOut, FiUser, FiBriefcase } from 'react-icons/fi'
+import { FiMoon, FiSun, FiLogOut, FiUser, FiBriefcase, FiMenu, FiX } from 'react-icons/fi'
 import { motion } from 'framer-motion'
 
 const Navbar = () => {
@@ -13,12 +13,14 @@ const Navbar = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const dropdownRef = useRef(null)
 
   const handleLogout = () => {
     dispatch(logout())
     navigate('/')
     setIsDropdownOpen(false)
+    setIsMobileMenuOpen(false)
   }
 
   // Close dropdown when clicking outside
@@ -43,7 +45,8 @@ const Navbar = () => {
             <span className="text-xl font-bold">JobPortal AI</span>
           </Link>
 
-          <div className="flex items-center space-x-4">
+          {/* Desktop Nav */}
+          <div className="hidden md:flex items-center space-x-4">
             <button
               onClick={() => dispatch(toggleDarkMode())}
               className={`p-3 rounded-lg transition-all-smooth ${darkMode ? 'hover:bg-onyx-700 text-cream-100' : 'hover:bg-cream-100 text-onyx-800'}`}
@@ -130,7 +133,111 @@ const Navbar = () => {
               </>
             )}
           </div>
+
+          {/* Mobile menu button */}
+          <div className="md:hidden flex items-center space-x-2">
+            <button
+              onClick={() => dispatch(toggleDarkMode())}
+              className={`p-3 rounded-lg transition-all-smooth ${darkMode ? 'hover:bg-onyx-700 text-cream-100' : 'hover:bg-cream-100 text-onyx-800'}`}
+            >
+              {darkMode ? <FiSun className="text-xl" /> : <FiMoon className="text-xl" />}
+            </button>
+            <button 
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className={`p-3 rounded-lg transition-all-smooth ${darkMode ? 'hover:bg-onyx-700 text-cream-100' : 'hover:bg-cream-100 text-onyx-800'}`}
+            >
+              {isMobileMenuOpen ? <FiX className="text-xl" /> : <FiMenu className="text-xl" />}
+            </button>
+          </div>
         </div>
+
+        {/* Mobile Menu */}
+        {isMobileMenuOpen && (
+          <div className={`py-4 border-t ${darkMode ? 'border-onyx-700' : 'border-cream-200'}`}>
+            {token ? (
+              <div className="space-y-3">
+                <Link
+                  to="/"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className={`block px-3 py-2 rounded-lg transition-all-smooth ${darkMode ? 'text-cream-100 hover:bg-onyx-700' : 'text-onyx-800 hover:bg-cream-100'}`}
+                >
+                  Home
+                </Link>
+                <Link
+                  to="/jobs"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className={`block px-3 py-2 rounded-lg transition-all-smooth ${darkMode ? 'text-cream-100 hover:bg-onyx-700' : 'text-onyx-800 hover:bg-cream-100'}`}
+                >
+                  Jobs
+                </Link>
+                <Link
+                  to="/dashboard"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className={`block px-3 py-2 rounded-lg transition-all-smooth ${darkMode ? 'text-cream-100 hover:bg-onyx-700' : 'text-onyx-800 hover:bg-cream-100'}`}
+                >
+                  Dashboard
+                </Link>
+                {user?.role === 'recruiter' && (
+                  <Link
+                    to="/recruiter-dashboard"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="btn-cream block px-3 py-2 text-onyx-900 rounded-lg font-semibold"
+                  >
+                    Recruiter Dashboard
+                  </Link>
+                )}
+                <div className="pt-3 border-t border-dashed" style={{ borderColor: darkMode ? '#494c55' : '#e2e8f0' }}>
+                  <div className="flex items-center justify-between px-3 py-2 mb-2">
+                    <div className="flex items-center space-x-2">
+                      <FiUser className="text-xl" />
+                      <span className="font-medium">{user?.name}</span>
+                    </div>
+                  </div>
+                  <Link
+                    to="/profile"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className={`block px-3 py-2 rounded-lg transition-all-smooth ${darkMode ? 'text-cream-100 hover:bg-onyx-700' : 'text-onyx-800 hover:bg-cream-100'}`}
+                  >
+                    Profile
+                  </Link>
+                  <button
+                    onClick={handleLogout}
+                    className={`w-full text-left px-3 py-2 rounded-lg transition-all-smooth ${darkMode ? 'text-cream-100 hover:bg-onyx-700' : 'text-onyx-800 hover:bg-cream-100'}`}
+                  >
+                    <div className="flex items-center space-x-2">
+                      <FiLogOut />
+                      <span>Logout</span>
+                    </div>
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <div className="space-y-3">
+                <Link
+                  to="/"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className={`block px-3 py-2 rounded-lg transition-all-smooth ${darkMode ? 'text-cream-100 hover:bg-onyx-700' : 'text-onyx-800 hover:bg-cream-100'}`}
+                >
+                  Home
+                </Link>
+                <Link
+                  to="/login"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className={`block px-3 py-2 rounded-lg transition-all-smooth ${darkMode ? 'text-cream-100 hover:bg-onyx-700' : 'text-onyx-800 hover:bg-cream-100'}`}
+                >
+                  Login
+                </Link>
+                <Link
+                  to="/signup"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="btn-cream block px-3 py-2 text-onyx-900 rounded-lg font-semibold text-center"
+                >
+                  Sign Up
+                </Link>
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </nav>
   )
